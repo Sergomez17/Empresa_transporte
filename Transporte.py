@@ -1,78 +1,107 @@
-def pedir_entero(mensaje):
+def solicitar_0_o_1(nombre_de_la_variable):
     while True:
         try:
-            valor = int(input(mensaje))
-            if valor < 0:
-                print("Ingrese un valor no negativo")
-                continue
-            return valor
-        except:
-            print("Entrada inválida")
+            valor_de_la_variable = int(input(f'Ingrese si {nombre_de_la_variable} es 0 o 1: '))
+            if valor_de_la_variable == 1 or valor_de_la_variable == 0:
+                break
+            else:
+                print(f'{nombre_de_la_variable} debe ser 1 o 0 rey.')
+            
+        except ValueError:
+            print(f'{nombre_de_la_variable} debe ser un número entero rey.2')
+    return valor_de_la_variable
 
-def pedir_float(mensaje):
+def solicitar_valor_positivo(nombre_de_la_variable):
     while True:
         try:
-            valor = float(input(mensaje))
-            if valor < 0:
-                print("Ingrese un valor no negativo")
-                continue
-            return valor
-        except:
-            print("Entrada inválida")
+            valor_variable = float(input(f'Ingrese {nombre_de_la_variable}: '))
+            if valor_variable <0:
+                print(f'{nombre_de_la_variable} no puede ser negativo.')
+            else:
+                break
+        except ValueError:
+            print(f'{nombre_de_la_variable} debe ser un número.')
+    return valor_variable
 
-def main():
-    total_pasajeros = 0
-    total_recaudado = 0
-    recaudado_hombres = 0
-    recaudado_mujeres = 0
-    total_descuentos = 0
-    max_recaudacion = -1
-    viaje_max = None
-    suma_edades = 0
+def solicitar_entero_positivo(nombre_de_la_variable):
     while True:
-        origen = input("Ingrese ciudad de origen: ")
-        destino = input("Ingrese ciudad de destino: ")
-        precio_viaje = pedir_float("Ingrese precio del viaje: ")
-        cantidad_pasajeros = pedir_entero("Ingrese cantidad de pasajeros: ")
-        viaje_recaudado = 0
-        for i in range(cantidad_pasajeros):
-            print("Pasajero", i + 1)
-            nombre = input("Ingrese nombre del pasajero: ")
-            genero = input("Ingrese género del pasajero (M/F): ").upper()
-            edad = pedir_entero("Ingrese edad del pasajero: ")
-            es_estudiante = input("¿Es estudiante? (s/n): ").lower()
-            costo = precio_viaje
-            descuento = 0
-            if es_estudiante == "s":
-                descuento = 0.3 * precio_viaje
-                costo = precio_viaje - descuento
-            viaje_recaudado += costo
-            total_recaudado += costo
-            total_pasajeros += 1
-            suma_edades += edad
-            if genero == "M":
-                recaudado_hombres += costo
-            elif genero == "F":
-                recaudado_mujeres += costo
+        try:
+            valor = int(input(f'Ingrese {nombre_de_la_variable}: '))
+            if valor < 0:
+                print(f'{nombre_de_la_variable} no puede ser negativo.')
+            else:
+                return valor
+        except ValueError:
+            print(f'{nombre_de_la_variable} debe ser un número entero.')
+
+def solicitar_texto(nombre_de_la_variable):
+    while True:
+        texto = input(f'Ingrese {nombre_de_la_variable}: ')
+        if texto == '':
+            print(f'{nombre_de_la_variable} no puede estar vacio.')
+        else:
+            return texto
+
+def solicitar_genero(nombre_de_la_variable):
+    while True:
+        genero = input(f'Ingrese {nombre_de_la_variable}: ').lower()
+        if genero == 'f' or genero == 'm':
+            return genero
+        else:
+            print(f'{nombre_de_la_variable} debe ser f o m.')
+
+total_pasajeros = 0
+total_dinero = 0
+total_dinero_masculino = 0
+total_dinero_femenino = 0
+total_descuentos = 0
+suma_edades = 0
+viaje_max_dinero = None
+max_dinero = 0
+
+agregar_viaje = solicitar_0_o_1('Ingrese si desea agregar un viaje (0 o 1): ')
+while agregar_viaje == 1:
+    ciudad_origen = solicitar_texto('ciudad de origen')
+    ciudad_destino = solicitar_texto('ciudad de destino')
+    precio_viaje = solicitar_valor_positivo('precio del viaje')
+    cantidad_pasajeros = solicitar_entero_positivo('la cantidad de pasajeros')
+    dinero_viaje = 0
+    
+    for i in range(cantidad_pasajeros):
+        nombre_pasajero = solicitar_texto('nombre del pasajero')
+        genero = solicitar_genero('genero del pasajero')
+        edad = solicitar_entero_positivo('edad del pasajero')
+        es_estudiante = solicitar_0_o_1('el pasajero es estudiante (1 si, 0 si no): ')
+        
+        if es_estudiante == 1:
+            descuento = precio_viaje * 0.30
+            pago = precio_viaje - descuento
             total_descuentos += descuento
-        print("El viaje de", origen, "a", destino, "recaudó:", viaje_recaudado)
-        if viaje_recaudado > max_recaudacion:
-            max_recaudacion = viaje_recaudado
-            viaje_max = f"{origen} -> {destino}"
-        continuar = input("¿Desea ingresar otro viaje? (s/n): ").lower()
-        if continuar != "s":
-            break
-    print("Total de pasajeros:", total_pasajeros)
-    print("Total de dinero recaudado:", total_recaudado)
-    print("Total recaudado por hombres:", recaudado_hombres)
-    print("Total recaudado por mujeres:", recaudado_mujeres)
-    print("Total descuentos aplicados a estudiantes:", total_descuentos)
-    if viaje_max is not None:
-        print("El viaje que recaudó más dinero fue", viaje_max, "con", max_recaudacion)
-    if total_pasajeros > 0:
-        print("Promedio de edad de los pasajeros:", suma_edades / total_pasajeros)
-    else:
-        print("Promedio de edad de los pasajeros: 0")
+        else:
+            pago = precio_viaje
+        dinero_viaje += pago
+        total_pasajeros += 1
+        suma_edades += edad
+        
+        if genero == 'm':
+            total_dinero_masculino += pago
+        else:
+            total_dinero_femenino += pago
+        
+    total_dinero += dinero_viaje
+    if dinero_viaje > max_dinero:
+            max_dinero = dinero_viaje
+            viaje_max_dinero = f'{ciudad_origen} a {ciudad_destino}.'
+            
+    agregar_viaje = solicitar_0_o_1('desea agregar otro viaje (1 si, 0 no): ')
 
-if __name__ == "__main__":
-    main()
+promedio_edad = suma_edades / total_pasajeros if total_pasajeros > 0 else 0
+
+print(f'\nTotal de pasajeros: {total_pasajeros}')
+print(f'Total de dinero de los viajes: ${total_dinero}')
+print(f'\nTotal dinero de los pasajeros masculinos: ${total_dinero_masculino}')
+print(f'Total de dinero de los pasajeros femeninos: ${total_dinero_femenino}')
+print(f'\nTotal de los descuentos que se aplicaron: ${total_descuentos}')
+print(f'El viaje que recaudo mas dinero fue: {viaje_max_dinero} con ${max_dinero}')
+print(f'\nPromedio de la edad de los pasajeros: {promedio_edad}')
+print(f'\nTotal de dinero de todos los viajes: ${total_dinero}')
