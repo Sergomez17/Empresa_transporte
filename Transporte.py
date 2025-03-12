@@ -1,7 +1,7 @@
 def solicitar_0_o_1(nombre_de_la_variable):
     while True:
         try:
-            valor_de_la_variable = int(input(f'Ingrese si {nombre_de_la_variable} es 0 o 1: '))
+            valor_de_la_variable = int(input(f'{nombre_de_la_variable}'))
             if valor_de_la_variable == 1 or valor_de_la_variable == 0:
                 break
             else:
@@ -45,7 +45,10 @@ def solicitar_texto(nombre_de_la_variable):
 def solicitar_genero(nombre_de_la_variable):
     while True:
         genero = input(f'Ingrese {nombre_de_la_variable}: ').lower()
-        if genero == 'f' or genero == 'm':
+        if genero == 'm':
+            genero += total_hombres
+        elif genero == 'f':
+            genero += total_mujeres
             return genero
         else:
             print(f'{nombre_de_la_variable} debe ser f o m.')
@@ -54,6 +57,8 @@ total_pasajeros = 0
 total_dinero = 0
 total_dinero_masculino = 0
 total_dinero_femenino = 0
+total_hombres = 0
+total_mujeres = 0 
 total_descuentos = 0
 suma_edades = 0
 viaje_max_dinero = None
@@ -94,9 +99,12 @@ while agregar_viaje == 1:
             viaje_max_dinero = f'{ciudad_origen} a {ciudad_destino}.'
             
     agregar_viaje = solicitar_0_o_1('desea agregar otro viaje (1 si, 0 no): ')
+    
+promedio_edad_mujeres = suma_edades / total_mujeres if total_mujeres > 0 else 0
 
 promedio_edad = suma_edades / total_pasajeros if total_pasajeros > 0 else 0
 
+print(f'\nEl promedio de las edades de las mujeres es de: {promedio_edad_mujeres}')
 print(f'\nTotal de pasajeros: {total_pasajeros}')
 print(f'Total de dinero de los viajes: ${total_dinero}')
 print(f'\nTotal dinero de los pasajeros masculinos: ${total_dinero_masculino}')
